@@ -19,10 +19,24 @@ def analisar_dados():
     avaliacoes=[]
     data_vendas={}
     receita_marca={}
+    meses = {
+    1: "Janeiro",
+    2: "Fevereiro",
+    3: "Março",
+    4: "Abril",
+    5: "Maio",
+    6: "Junho",
+    7: "Julho",
+    8: "Agosto",
+    9: "Setembro",
+    10: "Outubro",
+    11: "Novembro",
+    12: "Dezembro"
+}
     for df in chunks:
         df=limpar_dados(df)
         df["Sale_Date"]=pd.to_datetime(df["Sale_Date"])
-        df["Month"]=df["Sale_Date"].dt.month_name(locale="pt_BR.UTF-8")
+        df["Month"] = df["Sale_Date"].dt.month.map(meses)
         for marca,quantidade in df["Car_Make"].value_counts().items():
             if marca in marcas:
                 marcas[marca]+=quantidade
@@ -76,4 +90,3 @@ def analisar_dados():
         "data_vendas":data_vendas,
         "receita_marca":receita_marca,
     }
-analisar_dados()
