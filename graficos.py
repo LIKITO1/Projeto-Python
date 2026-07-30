@@ -58,9 +58,10 @@ def grafico_participacao_marca(marcas):
         participacao,
         names="Marca",
         values="Vendas",
-        title="Participação de Cada Marca nas Vendas"
+        title="Participação de Cada Marca nas Vendas",
+        color="Marca"
     )
-    fig.show()
+    return fig
 def grafico_comissao_vendedores(comisssao_vendedores):
     tabela=pd.DataFrame({
         "Vendedor":list(comisssao_vendedores.keys()),
@@ -85,7 +86,61 @@ def grafico_receita_mes(data_vendas):
         df,
         x="Data",
         y="Vendas",
-        title="Evolução das Vendas",
         markers=True
+    )
+    return fig
+def grafico_vendas_estado(estados):
+    dados=pd.DataFrame({
+        "Estado":list(estados.keys()),
+        "Vendas":list(estados.values())
+    })
+    dados=dados.sort_values(
+        by="Vendas",
+        ascending=False
+    )
+    fig=px.bar(
+        dados,
+        x="Estado",
+        y="Vendas",
+        color="Estado"
+    )
+    fig.update_yaxes(
+        range=[
+            dados["Vendas"].min()*0.9,
+            dados["Vendas"].max()*1.1
+        ]
+    )
+    return fig
+def grafico_avalicacoes(avaliacoes):
+    df = pd.DataFrame({
+        "Avaliação": avaliacoes
+    })
+    df["Faixa"] = pd.cut(
+        df["Avaliação"],
+        bins=[1,1.5,2,2.5,3, 3.5, 4, 4.5, 5],
+        labels=[
+            "1.0 - 1.5",
+            "1.5 - 2.0",
+            "2.0 - 2.5",
+            "2.5 - 3.0",
+            "3.0 - 3.5",
+            "3.5 - 4.0",
+            "4.0 - 4.5",
+            "4.5 - 5.0"
+        ],
+        include_lowest=True
+    )
+    contagem = (
+        df["Faixa"]
+        .value_counts()
+        .sort_index()
+        .reset_index()
+    )
+    contagem.columns = ["Faixa", "Quantidade"]
+    fig = px.bar(
+        contagem,
+        x="Faixa",
+        y="Quantidade",
+        color="Faixa",
     )
     return fig

@@ -7,14 +7,19 @@ from graficos import (
     grafico_receita_marca,
     grafico_participacao_marca,
     grafico_comissao_vendedores,
-    grafico_receita_mes
+    grafico_receita_mes,
+    grafico_vendas_estado,
+    grafico_avalicacoes
 )
 resultado=analisar_dados()
 tabela=grafico_comissao_vendedores(resultado["vendedores"])
-aba1,aba2,aba3=st.tabs([
+aba1,aba2,aba3,aba4,aba5,aba6=st.tabs([
     "Marcas",
     "Vendedores",
-    "Receita por Mês"
+    "Evolução das Vendas",
+    "Participação das Marcas",
+    "Vendas por Estado",
+    "Avaliações"
 ])
 with aba1:
     st.title("Dashboard de Vendas de Veículos")
@@ -28,5 +33,14 @@ with aba2:
     st.title("Comissão dos Vendedores")
     st.dataframe(tabela,hide_index=True)
 with aba3:
-    st.title("Receita por Mês")
+    st.title("Evolução das Vendas")
     st.plotly_chart(grafico_receita_mes(resultado["data_vendas"]),width="stretch")
+with aba4:
+    st.title("Participação das Marcas")
+    st.plotly_chart(grafico_participacao_marca(resultado["marcas"]))
+with aba5:
+    st.title("Vendas por Estado")
+    st.plotly_chart(grafico_vendas_estado(resultado["estados"]))
+with aba6:
+    st.title("Avaliações dos Clientes")
+    st.plotly_chart(grafico_avalicacoes(resultado["avaliacoes"]))
