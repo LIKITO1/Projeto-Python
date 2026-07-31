@@ -58,7 +58,6 @@ def grafico_participacao_marca(marcas):
         participacao,
         names="Marca",
         values="Vendas",
-        title="Participação de Cada Marca nas Vendas",
         color="Marca"
     )
     return fig

@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 from analise import analisar_dados
+from datetime import datetime
 from graficos import (
     grafico_marcas,
     grafico_vendas_mes,
@@ -13,13 +14,14 @@ from graficos import (
 )
 resultado=analisar_dados()
 tabela=grafico_comissao_vendedores(resultado["vendedores"])
-aba1,aba2,aba3,aba4,aba5,aba6=st.tabs([
+aba1,aba2,aba3,aba4,aba5,aba6,aba7=st.tabs([
     "Marcas",
     "Vendedores",
     "Evolução das Vendas",
     "Participação das Marcas",
     "Vendas por Estado",
-    "Avaliações"
+    "Avaliações",
+    "Nova Venda"
 ])
 with aba1:
     st.title("Dashboard de Vendas de Veículos")
@@ -44,3 +46,43 @@ with aba5:
 with aba6:
     st.title("Avaliações dos Clientes")
     st.plotly_chart(grafico_avalicacoes(resultado["avaliacoes"]))
+with aba7:
+    st.title("Nova Venda")
+    with st.form("Cadastro"):
+        data_venda=st.date_input("Data da Venda",datetime.now().date())
+        vendedor=st.text_input("Nome do Vendedor")
+        nome_cliente=st.text_input("Nome do Cliente")
+        marca_carro=st.text_input("Nome da Marca")
+        modelo_carro=st.text_input("Nome do Modelo")
+        ano_carro=st.number_input(
+            "Ano",
+            min_value=1950,
+            max_value=datetime.now().year,
+            step=1
+        )
+        valor_venda=st.number_input(
+        "Valor da Venda",
+            min_value=0.0
+        )
+        desconto=st.number_input(
+            "Desconto(%)",
+            min_value=0.0
+        )
+        comissao=st.number_input(
+            "Comissão do Vendedor(%)",
+            min_value=0.0
+        )
+        estado=st.text_input("Estado(Exemplo:SP)")
+        cidade=st.text_input("Cidade")
+        metodo_pagamento=st.selectbox(
+            "Método de Pagamento",
+            ["Financiamento","Cartão de Débito","Cartão de Crédito"]
+        )
+        nota=st.slider(
+            "Avaliação do Cliente",
+            1.0,
+            5.0,
+            5.0,
+            0.1
+        )
+        enviar=st.form_submit_button("Salvar Venda")
