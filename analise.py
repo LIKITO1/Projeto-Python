@@ -1,8 +1,8 @@
 import pandas as pd
 from limpeza import limpar_dados
 from processamento import processar_dados
-def analisar_dados():
-    chunks=processar_dados()
+def analisar_dados(csv_usuario):
+    chunks=processar_dados(csv_usuario)
     receita_total=0
     quantidade_vendas=0
     valor_medio_vendas=0
