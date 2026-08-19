@@ -61,19 +61,23 @@ def grafico_participacao_marca(marcas):
         color="Marca"
     )
     return fig
-def grafico_comissao_vendedores(comisssao_vendedores):
-    tabela=pd.DataFrame({
-        "Vendedor":list(comisssao_vendedores.keys()),
-        "Comissao":list(comisssao_vendedores.values())
+def tabela_comissao_vendedores(comissoes):
+    """
+    Monta uma tabela (não um gráfico) com a comissão de cada vendedor,
+    já ordenada da maior para a menor e formatada como moeda por extenso.
+    """
+
+    from utils import formatar_moeda
+
+    dados = pd.DataFrame({
+        "Vendedor": list(comissoes.keys()),
+        "Comissão": list(comissoes.values()),
     })
-    tabela=tabela.sort_values(
-        by="Comissao",
-        ascending=False
-    )
-    tabela["Comissao"] = tabela["Comissao"].apply(
-        lambda x: f"R$ {x:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    )
-    return tabela
+
+    dados = dados.sort_values(by="Comissão", ascending=False).reset_index(drop=True)
+    dados["Comissão"] = dados["Comissão"].apply(formatar_moeda)
+
+    return dados
 def grafico_receita_mes(data_vendas):
     df = pd.DataFrame({
         "Data": list(data_vendas.keys()),
